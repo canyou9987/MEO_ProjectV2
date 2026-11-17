@@ -4,24 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "MEO_ProjectV2/DataStruct/MEODataTypes.h"
 #include "MEOPlayerController.generated.h"
 
 class AMEOCameraPawn;
 class AMEOHUD;
 
-//	단축키 입력으로 열고 닫을 수 있는 모델(Model) UI 창에 대한 열거형
-UENUM(BlueprintType)
-enum class EMEOUIWindowType : uint8
-{
-	Inventory,		//	인벤토리 및 장비창																			(단축키 : I )
-	PassiveTree,	//	패시브 스킬 트리																			(단축키 : P )
-	SkillMenu,		//	스킬 젬 및 보조 젬 소켓창																	(단축키 : G )
-	CharActerStats, //	캐릭터 상세 스텟 창																			(단축키 : T )
-	WorldMap		//	월드맵 및 인스턴스 정보																		(단축키 : M  ) 
-	//	상세정보 를 출력하는 텍스트 (창 X) (인스턴스 정보,체력,보호막,경험치 등 숫자표기 안되있는것들 숫자료 표기)  (단축키 : Alt )
-	//	인스턴스 맵(월드 맵 X )을 반투명하게 화면 중앙에 뛰우고 인스턴스 정보 오른쪽 상단 미니맵 옆에 표기			(단축키 : Tab ) 
-	//	기타 UI창은 추후....
-};
 
 UCLASS()
 class MEO_PROJECTV2_API AMEOPlayerController : public APlayerController
@@ -121,9 +109,9 @@ private:
 	//	UI 단축키 바인딩용 래퍼 함수들
 	void RequestToggleUI(EMEOUIWindowType WindowType);
 	void Input_ToggleInventory() { RequestToggleUI(EMEOUIWindowType::Inventory); }
-	void Input_PassvieTree() { RequestToggleUI(EMEOUIWindowType::PassiveTree); }
+	void Input_PassiveTree() { RequestToggleUI(EMEOUIWindowType::PassiveTree); }
 	void Input_SkillMenu() { RequestToggleUI(EMEOUIWindowType::SkillMenu); }
-	void Input_CharacterUI() { RequestToggleUI(EMEOUIWindowType::CharActerStats); }
+	void Input_CharacterUI() { RequestToggleUI(EMEOUIWindowType::CharacterStats); }
 
 	//	--- 입력 버퍼링 (Input Buffering) 관련 변수 ---
 	int32 BufferedSkillSlot = -1;		// 예약된 스킬 슬롯 인덱스 (-1이면 비어있음)
@@ -135,7 +123,7 @@ private:
 
 	//	--- 네트워크 최적화 (RPC Throttling) 관련 변수 ----
 	//	RPC 과도 호출(광클) 차단을 위한 타임스탬프 , 마지막으로 스킬 RPC를 서버에 전송한 월드 시간
-	float LastSkillRPCExcutionTime = 0.0f;
+	float LastSkillRPCExecutionTime = 0.0f;
 	//	서버 보호를 위한 최소 RPC 호출 간격 (20Hz 제한 = 0.05초)
 	const float MIN_RPC_INTERVAL = 0.05;
 

@@ -69,7 +69,7 @@ void AMEOPlayerController::SetupInputComponent()
 
 	//	3. UI 패널 토글 단축키 바인딩 (I, P, G, T, )
 	InputComponent->BindAction("ToggleInventory", IE_Pressed, this, &AMEOPlayerController::Input_ToggleInventory);
-	InputComponent->BindAction("TogglePassiveTree", IE_Pressed, this, &AMEOPlayerController::Input_PassvieTree);
+	InputComponent->BindAction("TogglePassiveTree", IE_Pressed, this, &AMEOPlayerController::Input_PassiveTree);
 	InputComponent->BindAction("ToggleSkillMenu", IE_Pressed, this, &AMEOPlayerController::Input_SkillMenu);
 	InputComponent->BindAction("ToggleCharacterUI", IE_Pressed, this, &AMEOPlayerController::Input_CharacterUI);
 
@@ -105,7 +105,7 @@ void AMEOPlayerController::RequestSkillCast(int32 SkillSlotIndex, const FVector&
 
 	//	[RPC Rate Limiting / 스로틀링]
 	//	단축키 광클이나 매크로로 인한 네트워크 패킷 폭증을 막기 위해 0.05초(20Hz) 이내의 연속 호출을 차단
-	if (CurrentTime - LastSkillRPCExcutionTime < MIN_RPC_INTERVAL)
+	if (CurrentTime - LastSkillRPCExecutionTime < MIN_RPC_INTERVAL)
 	{
 		//	패킷 전송은 막되, 조작감이 씹히지 않도록 입력 버퍼에 커맨드를 임시 저장
 		QueueInputBuffer(SkillSlotIndex,TargetLocation, TargetActor);
@@ -118,7 +118,7 @@ void AMEOPlayerController::RequestSkillCast(int32 SkillSlotIndex, const FVector&
 	//    서버에 불필요한 실패 RPC를 보내지 않고 즉시 QueueInputBuffer()에 저장한 뒤 return 합니다.
 	// 3. 로컬 예측(Client-Side Prediction)을 위해 클라이언트에서 먼저 시전 몽타주를 재생할 수 있습니다.
 
-	LastSkillRPCExcutionTime = CurrentTime;
+	LastSkillRPCExecutionTime = CurrentTime;
 
 	//	검증을 통과 했으므로 버퍼를 비우고 서버로 스킬 시전 RPC를 전송
 	BufferedSkillSlot = -1;
