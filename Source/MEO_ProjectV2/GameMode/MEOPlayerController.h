@@ -81,13 +81,13 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 	void Server_RequestWeaponSwap();
 
-	//	컨트롤러가 소유(Possess)하여 시점 제어하는 쿼터뷰 전용 카메라 폰
-	UPROPERTY(BlueprintReadOnly, Category = "MEO|Camera")
-	TObjectPtr<AMEOCameraPawn> ControlledCameraPawn = nullptr;
-
 	//	실제 플레이어가 조종하는 전투 캐릭터 액터 참조 (CameraPawn과 분리 관리)
 	UPROPERTY(BlueprintReadOnly, Category = "MEO|Character")
 	TObjectPtr<APawn> ControlledCombatCharacter = nullptr;
+
+	//	컨트롤러가 소유(Possess)하여 시점 제어하는 쿼터뷰 전용 카메라 폰
+	UPROPERTY(BlueprintReadOnly, Category = "MEO|Camera")
+	TObjectPtr<AMEOCameraPawn> ControlledCameraPawn = nullptr;
 
 private:
 	// -------------------------------------------------------------------------
@@ -127,4 +127,10 @@ private:
 	//	서버 보호를 위한 최소 RPC 호출 간격 (20Hz 제한 = 0.05초)
 	const float MIN_RPC_INTERVAL = 0.05;
 
+public:
+	// -------------------------------------------------------------------------
+	//	외부에서 엑세스 하기위한 Getter 함수
+	// -------------------------------------------------------------------------
+	UFUNCTION(BlueprintPure, Category = "MEO|Camera")
+	AMEOCameraPawn* GetControlledCameraPawn() { return ControlledCameraPawn;  }
 };
