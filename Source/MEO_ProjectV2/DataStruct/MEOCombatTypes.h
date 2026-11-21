@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,27 +6,27 @@
 #include "GameplayTagContainer.h"
 #include "MEOCombatTypes.generated.h"
 
-//	5´ë ÇÇÇØ ¼Ó¼º ±¸ºĞ
+//	5ëŒ€ í”¼í•´ ì†ì„± êµ¬ë¶„
 UENUM(BlueprintType)
 enum class EMEODamageType : uint8
 {
-	Physical,			//	¹°¸®
-	Fire,				//	È­¿°
-	Cold,				//	³Ã±â
-	Lightning,			//	¹ø°³
-	Chaos				//	Ä«¿À½º (ES °üÅë ¼Ó¼º)
+	Physical,			//	ë¬¼ë¦¬
+	Fire,				//	í™”ì—¼
+	Cold,				//	ëƒ‰ê¸°
+	Lightning,			//	ë²ˆê°œ
+	Chaos				//	ì¹´ì˜¤ìŠ¤ (ES ê´€í†µ ì†ì„±)
 };
 
 UENUM(BlueprintType)
 enum class EMEOResource : uint8
 {
-	Life,				//	»ı¸í·Â 
-	Mana,				//	¸¶³ª
-	EnergyShiel,		//	¿¡³ÊÁö º¸È£¸·  = Es
-	Sprit				//	Á¤½Å·Â (¿À¶ó,¹öÇÁ,¼ÒÈ¯¼ö,¿µ±¸ Á¡À¯ ÀÚ¿ø)
+	Life,				//	ìƒëª…ë ¥ 
+	Mana,				//	ë§ˆë‚˜
+	EnergyShiel,		//	ì—ë„ˆì§€ ë³´í˜¸ë§‰  = Es
+	Sprit				//	ì •ì‹ ë ¥ (ì˜¤ë¼,ë²„í”„,ì†Œí™˜ìˆ˜,ì˜êµ¬ ì ìœ  ìì›)
 };
 
-//	5´ë ¼Ó¼ºº° µ¥¹ÌÁö ¼öÄ¡ ÄÁÅ×ÀÌ³Ê
+//	5ëŒ€ ì†ì„±ë³„ ë°ë¯¸ì§€ ìˆ˜ì¹˜ ì»¨í…Œì´ë„ˆ
 USTRUCT(BlueprintType)
 struct FMEODamagePool
 {
@@ -47,7 +47,7 @@ struct FMEODamagePool
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 	float Chaos = 0.0f;
 
-	//	Æ¯Á¤ ¼Ó¼º ¼öÄ¡ Á¶È¸ ÇÛÆÛ
+	//	íŠ¹ì • ì†ì„± ìˆ˜ì¹˜ ì¡°íšŒ í•¼í¼
 	float GetByType(EMEODamageType type) const
 	{
 		switch (type)
@@ -60,10 +60,10 @@ struct FMEODamagePool
 		default:	return 0.0f;
 		}
 	}
-	//	EMEODamageType Å¸ÀÔÀ» Á¶È¸ÇÏ¸é FMEODamagePool¿¡¼­ °ªÀ» Á¶È¸ÇÑ´Ù?
+	//	EMEODamageType íƒ€ì…ì„ ì¡°íšŒí•˜ë©´ FMEODamagePoolì—ì„œ ê°’ì„ ì¡°íšŒí•œë‹¤?
 
-	//	Æ¯Á¤ ¼Ó¼º ¼öÄ¡ ¼³Á¤ ÇÛÆÛ
-	float GetByType(EMEODamageType type,float Value)
+	//	íŠ¹ì • ì†ì„± ìˆ˜ì¹˜ ì„¤ì • í•¼í¼
+	void SetByType(EMEODamageType type,float Value)
 	{
 		switch (type)
 		{
@@ -75,21 +75,21 @@ struct FMEODamagePool
 		default:	break;
 		}
 	}
-	//	¼³Á¤ÇÒ EMEODamageType Å¸ÀÔÀ» Á¶È¸ÇÏ¸é FMEODamagePoolÀÇ °ªÀ» Value¸¸Å­ ¼³Á¤ÇÑ´Ù?
+	//	ì„¤ì •í•  EMEODamageType íƒ€ì…ì„ ì¡°íšŒí•˜ë©´ FMEODamagePoolì˜ ê°’ì„ Valueë§Œí¼ ì„¤ì •í•œë‹¤?
 
-	//	¸ğµç ¼Ó¼º ÇÇÇØ ÇÕ°è ¹İÈ¯
+	//	ëª¨ë“  ì†ì„± í”¼í•´ í•©ê³„ ë°˜í™˜
 	float GeTotal() const
 	{
 		return Physical + Fire + Cold + Lightning + Chaos;
 	}
-	//	ÀÌ·¸°Ô ¸ğµç ÇÇÇØ¸¦ ÇÕ°èÇØ¼­ º¸³»¹ö¸®¸é,
-	//  ÇÃ·¹ÀÌ¾î°¡ A¸ó½ºÅÍ¿¡°Ô ¾ó¸¸Å­ÀÇ È­¿°ÇÇÇØ¸¦ Áá´ÂÁö¸¦ ¾Ë¼ö°¡ÀÖ³ª?¾Æ´Ï¸é ¹ø°³ÇÇÇØ¸¦?
-	//	±×·¡¾ßÁö °¨Àü È®À²°ú ÀÎÈ­¼º È®·ü°ú Á¡È­ È®·ü,µ¿°á ÆÛ¼¾Æ®¸¦ ¾î¶»°Ô ¾Æ´Â°ÅÁö?
-	//	±×·¸´Ù°í µ¥¹ÌÁö¸¦ ÇÑ¹ø¿¡ ¾ÈÀÔÈ÷´Â°Íµµ ÀÌ»óÇÑµ¥?
-	//	¿©±â¼­´Â °ÆÁ¤¾ÈÇØµµ µÇ´ÂÀÏÀÎ°¡? ³ªÁß¿¡ µ¥¹ÌÁö ¼³Á¤ÇÒ¶§¸¸ º¸¸é µÇ³ª?
+	//	ì´ë ‡ê²Œ ëª¨ë“  í”¼í•´ë¥¼ í•©ê³„í•´ì„œ ë³´ë‚´ë²„ë¦¬ë©´,
+	//  í”Œë ˆì´ì–´ê°€ Aëª¬ìŠ¤í„°ì—ê²Œ ì–¼ë§Œí¼ì˜ í™”ì—¼í”¼í•´ë¥¼ ì¤¬ëŠ”ì§€ë¥¼ ì•Œìˆ˜ê°€ìˆë‚˜?ì•„ë‹ˆë©´ ë²ˆê°œí”¼í•´ë¥¼?
+	//	ê·¸ë˜ì•¼ì§€ ê°ì „ í™•ìœ¨ê³¼ ì¸í™”ì„± í™•ë¥ ê³¼ ì í™” í™•ë¥ ,ë™ê²° í¼ì„¼íŠ¸ë¥¼ ì–´ë–»ê²Œ ì•„ëŠ”ê±°ì§€?
+	//	ê·¸ë ‡ë‹¤ê³  ë°ë¯¸ì§€ë¥¼ í•œë²ˆì— ì•ˆì…íˆëŠ”ê²ƒë„ ì´ìƒí•œë°?
+	//	ì—¬ê¸°ì„œëŠ” ê±±ì •ì•ˆí•´ë„ ë˜ëŠ”ì¼ì¸ê°€? ë‚˜ì¤‘ì— ë°ë¯¸ì§€ ì„¤ì •í• ë•Œë§Œ ë³´ë©´ ë˜ë‚˜?
 };
 
-//	¼Ó¼º ÀüÈ¯ ±ÔÄ¢ (¿¹ : ¹°¸® ÇÇÇØÀÇ 50%¸¦ È­¿° ÇÇÇØ·Î ÀüÈ¯)
+//	ì†ì„± ì „í™˜ ê·œì¹™ (ì˜ˆ : ë¬¼ë¦¬ í”¼í•´ì˜ 50%ë¥¼ í™”ì—¼ í”¼í•´ë¡œ ì „í™˜)
 USTRUCT(BlueprintType)
 struct FMEODamageConversionRule
 {
@@ -101,49 +101,49 @@ struct FMEODamageConversionRule
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Conversion")
 	EMEODamageType TargetType = EMEODamageType::Fire;
 
-	//	ÀüÈ¯ ºñÀ² (0.0 ~ 1.0, µ¿ÀÏ ¼Ò½º ÇÕ»ê 1.0 ÃÊ°ú½Ã ÀÚµ¿ Á¤±ÔÈ­)
+	//	ì „í™˜ ë¹„ìœ¨ (0.0 ~ 1.0, ë™ì¼ ì†ŒìŠ¤ í•©ì‚° 1.0 ì´ˆê³¼ì‹œ ìë™ ì •ê·œí™”)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Conversion")
 	float ConversionRation = 0.0f;
 
-	//	ÀüÈ¯ ¿¡ ¾²ÀÌ´Â ±¸Á¶Ã¼, ±¸ÇöµÈ ÇÔ¼ö X
+	//	ì „í™˜ ì— ì“°ì´ëŠ” êµ¬ì¡°ì²´, êµ¬í˜„ëœ í•¨ìˆ˜ X
 };
 
-//	°ø°İÀÚ/¹æ¾îÀÚ ½ºÅİ ½º³À¼¦ (µ¥¹ÌÁö ÆÄÀÌÇÁ¶óÀÎ ÀÔ·Â¿ë)
+//	ê³µê²©ì/ë°©ì–´ì ìŠ¤í…Ÿ ìŠ¤ëƒ…ìƒ· (ë°ë¯¸ì§€ íŒŒì´í”„ë¼ì¸ ì…ë ¥ìš©)
 USTRUCT(BlueprintType)
 struct FMEOCombatStatSnapshot
 {
 	GENERATED_BODY()
 
-	//	--- °ø°İÀÚ ½ºÅİ ---
+	//	--- ê³µê²©ì ìŠ¤í…Ÿ ---
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Offense")
 	float AccuracyRating = 1000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Offense")
-	float CriticalStrikeChance = 0.05f;		//	±âº» 5% (0.05)
+	float CriticalStrikeChance = 0.05f;		//	ê¸°ë³¸ 5% (0.05)
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Offense")
-	float CriticalDamageMultiplier = 1.5f;	//	±âº» 150% (1.5)
+	float CriticalDamageMultiplier = 1.5f;	//	ê¸°ë³¸ 150% (1.5)
 
-	//	ÇÕ¿¬»ê Áõ°¡(%) ÃÑÇÕ (¿¹: 120% Áõ°¡ = 1.2f)
+	//	í•©ì—°ì‚° ì¦ê°€(%) ì´í•© (ì˜ˆ: 120% ì¦ê°€ = 1.2f)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Offense")
 	FMEODamagePool IncreasedDamagePercent;
 
-	//	°ö¿¬»ê ÁõÆø(%) ´©Àû ¹èÀ² (º¸Á¶ Áª ¹× Å°½ºÅæ ³ëµå, ±âº»°ª 1.0f)
+	//	ê³±ì—°ì‚° ì¦í­(%) ëˆ„ì  ë°°ìœ¨ (ë³´ì¡° ì ¬ ë° í‚¤ìŠ¤í†¤ ë…¸ë“œ, ê¸°ë³¸ê°’ 1.0f)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Offense")
 	FMEODamagePool MoreDamageMultiplier;
 
-	//	¿ø¼Ò ÀúÇ× °üÅë·Â (¿¹: 0.15f = 15% °üÅë)
+	//	ì›ì†Œ ì €í•­ ê´€í†µë ¥ (ì˜ˆ: 0.15f = 15% ê´€í†µ)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Offense")
 	FMEODamagePool ElementalPentration;
 
-	//	--- ¹æ¾îÀÚ ½ºÅİ ---
+	//	--- ë°©ì–´ì ìŠ¤í…Ÿ ---
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Defense")
 	float Armor = 0.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Defense")
 	float EvasionRating = 0.0f;
 
-	//	¼Ó¼ºº° ÀúÇ×·Â (-1.0 ~ 0.75 , ÃÖ´ë ÀúÇ× »óÈ¯ 75%)
+	//	ì†ì„±ë³„ ì €í•­ë ¥ (-1.0 ~ 0.75 , ìµœëŒ€ ì €í•­ ìƒí™˜ 75%)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Defense")
 	FMEODamagePool Resitances;
 
@@ -152,7 +152,7 @@ struct FMEOCombatStatSnapshot
 
 	FMEOCombatStatSnapshot()
 	{
-		//	°ö¿¬»ê ÃÊ±â ¹èÀ² 1.0 À¸·Î ¼¼ÆÃ
+		//	ê³±ì—°ì‚° ì´ˆê¸° ë°°ìœ¨ 1.0 ìœ¼ë¡œ ì„¸íŒ…
 		MoreDamageMultiplier.Physical = 1.0f;
 		MoreDamageMultiplier.Fire = 1.0f;
 		MoreDamageMultiplier.Cold = 1.0f;
@@ -161,43 +161,43 @@ struct FMEOCombatStatSnapshot
 	}
 };
 
-//	6´Ü°è µ¥¹ÌÁö ¿¬»ê ÆÄÀÌÇÁ¶óÀÎ ÀÔÃâ·Â ÆĞÅ¶
+//	6ë‹¨ê³„ ë°ë¯¸ì§€ ì—°ì‚° íŒŒì´í”„ë¼ì¸ ì…ì¶œë ¥ íŒ¨í‚·
 USTRUCT(BlueprintType)
 struct FMEODamagePacket
 {
 	GENERATED_BODY()
 
-	//	°ø°İ ÁÖÃ¼ ¹× ÇÇ°İ ´ë»ó ÂüÁ¶
+	//	ê³µê²© ì£¼ì²´ ë° í”¼ê²© ëŒ€ìƒ ì°¸ì¡°
 	UPROPERTY(BlueprintReadWrite, Category = "Context")
 	TObjectPtr<AActor> InstigatorActor = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Context")
 	TObjectPtr<AActor> TargerActor = nullptr;
 
-	//	½ºÅ³ ¹× ÇÇÇØ ¼º°İ ÅÂ±× (¿¹: Attack, Spell, Projectile,  Area, DoT)
+	//	ìŠ¤í‚¬ ë° í”¼í•´ ì„±ê²© íƒœê·¸ (ì˜ˆ: Attack, Spell, Projectile,  Area, DoT)
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Context")
 	FGameplayTagContainer DamageTags;
 
-	//	ÁÖ¹®/Áö¼Ó ÇÇÇØ µî È¸ÇÇ ºÒ°¡´É ÆÇÁ¤ ¿©ºÎ
+	//	ì£¼ë¬¸/ì§€ì† í”¼í•´ ë“± íšŒí”¼ ë¶ˆê°€ëŠ¥ íŒì • ì—¬ë¶€
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Context")
 	bool bCanBeEvaded = true;
 
-	//	[Stage 1 ÀÔ·Â] ¹«±â/½ºÅ³ ±âº» ÇÇÇØ + ÇÃ·§(Flat) Ãß°¡ ÇÇÇØ
+	//	[Stage 1 ì…ë ¥] ë¬´ê¸°/ìŠ¤í‚¬ ê¸°ë³¸ í”¼í•´ + í”Œë«(Flat) ì¶”ê°€ í”¼í•´
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stage1")
 	FMEODamagePool BaseDamage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stage1")
 	FMEODamagePool AddedFlatDamage;
 
-	//	[Stage 2 ÀÔ·Â] ¼Ó¼º ÀüÈ¯ ±ÔÄ¢ ¸ñ·Ï
+	//	[Stage 2 ì…ë ¥] ì†ì„± ì „í™˜ ê·œì¹™ ëª©ë¡
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stage2")
 	TArray<FMEODamageConversionRule> ConverasionRules;
 
-	//	[Stage 3~5 ÀÔ·Â] °ø°İÀÚ,¹æ¾îÀÚ ÀüÅõ ½ºÅİ ½º³À¼¦
+	//	[Stage 3~5 ì…ë ¥] ê³µê²©ì,ë°©ì–´ì ì „íˆ¬ ìŠ¤í…Ÿ ìŠ¤ëƒ…ìƒ·
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	FMEOCombatStatSnapshot StatSnapShot;
 
-	//	--- ÆÄÀÌÇÁ¶óÀÎ ¿¬»ê ÃÖÁ¾ Ãâ·Â °á°ú ---
+	//	--- íŒŒì´í”„ë¼ì¸ ì—°ì‚° ìµœì¢… ì¶œë ¥ ê²°ê³¼ ---
 	UPROPERTY(BlueprintReadOnly, Category = "Result")
 	bool bIsEvaded = false;
 
@@ -217,7 +217,7 @@ struct FMEODamagePacket
 	float TotalFinalDamage = 0.0f;
 };
 
-//	½ºÅ³ 1È¸ ½ÃÀü ½Ã ¼Ò¸ğ ÀÚ¿ø ¸í¼¼ ±¸Á¶Ã¼
+//	ìŠ¤í‚¬ 1íšŒ ì‹œì „ ì‹œ ì†Œëª¨ ìì› ëª…ì„¸ êµ¬ì¡°ì²´
 USTRUCT(BlueprintType)
 struct FMEOResourceCost
 {
@@ -226,30 +226,30 @@ struct FMEOResourceCost
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resource")
 	EMEOResource ResourceType = EMEOResource::Mana;
 
-	//	½ºÅ³ Áª ±âº» ¼Ò¸ğ·®
+	//	ìŠ¤í‚¬ ì ¬ ê¸°ë³¸ ì†Œëª¨ëŸ‰
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resource")
 	float BaseCost = 0.0f;
 
-	//	¿¬°áµÈ º¸Á¶ ÁªµéÀÇ ¼Ò¸ğ ¹èÀ² ´©Àû°ö (¿¹ : 1.3 * 1.2 = 1.56)
+	//	ì—°ê²°ëœ ë³´ì¡° ì ¬ë“¤ì˜ ì†Œëª¨ ë°°ìœ¨ ëˆ„ì ê³± (ì˜ˆ : 1.3 * 1.2 = 1.56)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resource")
 	float SupportCostMultiplier = 1.0f;
 
-	//	ÆĞ½Ãºê/Àåºñ ÀÚ¿ø ¼Ò¸ğ °¨¼ÒÀ² (0.0~1.0)
+	//	íŒ¨ì‹œë¸Œ/ì¥ë¹„ ìì› ì†Œëª¨ ê°ì†Œìœ¨ (0.0~1.0)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resource")
 	float CostReductionPercent = 0.0f;
 };
 
-//	¿À¶ó/¹öÇÁ/¼ÒÈ¯¼öÀÇ Á¤½Å·Â(Spirit) ¿µ±¸ Á¡À¯ Ç×¸ñ
+//	ì˜¤ë¼/ë²„í”„/ì†Œí™˜ìˆ˜ì˜ ì •ì‹ ë ¥(Spirit) ì˜êµ¬ ì ìœ  í•­ëª©
 USTRUCT(BlueprintType)
 struct FMEOSpiritReservationEntry
 {
 	GENERATED_BODY()
 
-	//	Á¡À¯ ½ºÅ³ ¶Ç´Â ¹öÇÁÀÇ °íÀ¯ ½Äº° Å°
+	//	ì ìœ  ìŠ¤í‚¬ ë˜ëŠ” ë²„í”„ì˜ ê³ ìœ  ì‹ë³„ í‚¤
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spirit")
 	FName ReservationId = NAME_None;
 
-	//	Á¡À¯ ÁßÀÎ Á¤½Å·Â ¼öÄ¡
+	//	ì ìœ  ì¤‘ì¸ ì •ì‹ ë ¥ ìˆ˜ì¹˜
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spirit")
 	float ReservedAmount = 0.0f;
 };
