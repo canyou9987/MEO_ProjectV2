@@ -14,7 +14,7 @@ Unreal Engine 5 C++ 기반 쿼터뷰 액션 RPG 프레임워크 포트폴리오�
   * `UMEODamageSubsystem`: 6단계 데미지 연산 파이프라인(단방향 속성 전환, 합/곱연산 증폭, 방어도·저항 감쇄, ES/생명력 배분)
   * `UMEOResourceSubsystem`: 스킬 마나·생명력 소모 검증 및 오라·소환수 정신력(Spirit) 영구 점유 관리
   * `FMEODamagePacket` 기반 5대 속성별 실피해 보존을 통한 후속 상태이상 계층 결합도 분리
-* **[Layer 2 (2부-A): 주사위 및 엔트로피 난수 엔진 명세](./Docs/Layer_2_(2부-A)_주사위_및_엔트로피_난수_엔진_명세.md)**
+* **[Layer 2 (2부-A): 주사위 및 엔트로피 난수 엔진 명세](./Docs/Layer_2_(2부-A)_주사위_및_엔트로피_난수_엔진_명세_20261122.md)**
   * `UMEODiceSubsystem`: 언리얼 표준 `FRandomStream` 기반 `NdX + C` 주사위, 행운/불운(Advantage) 판정 및 가중치 추첨
   * 엔트로피(PRNG) 누적·이월 알고리즘을 통한 방어 판정 불운 방지 및 공격·드랍 순수 난수(True RNG) 분리 설계
 * **[SubSystem: 오브젝트 풀링 시스템](./Docs/SubSystem_ObjectPooling.md)** *(작성 예정)*
