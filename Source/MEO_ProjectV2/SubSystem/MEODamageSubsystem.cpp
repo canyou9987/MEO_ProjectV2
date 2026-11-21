@@ -68,6 +68,7 @@ FMEODamagePacket UMEODamageSubsystem::CalculateDamage(FMEODamagePacket InputPack
 	//-------------------------------------------------------------------------
 	//	[Stage 5] 방어 기제 감쇄 (방어도 및 원소/카오스 저항,관통력 연산)
 	//-------------------------------------------------------------------------
+    InputPacket.MitigatedDamage = Stage3Pool;
 	InputPacket = EvaluateMitigation(InputPacket);
 
 	//-------------------------------------------------------------------------
@@ -156,16 +157,19 @@ FMEODamagePool UMEODamageSubsystem::ApplyDamageConversion(const FMEODamagePool& 
         for (const FMEODamageConversionRule& Rule : ValidRules)
         {
             const float EffectiveRation = Rule.ConversionRation * ScaleFactor;
-            const float CovertedAmount = SourceAmount * EffectiveRation;
+            const float ConvertedAmount = SourceAmount * EffectiveRation;
 
-            //  전환된 만큼 원본 속성 풀에서 차감
-            ResultPool.SetByType(SourceType, FMath::Max(0.0f, SourceAmount - TotalConvertedOut));
-            //  FMath::Max(0.0f, SourceAmount - TotalConvertedOut)값을 SourceType으로 전환
-            //  근데 전환을 한다고 하더라도, 번개피해나 냉기 피해가 조금씩 추가되는 경우가 있는데
-            //  이건 그냥 데미지 전부를 변환시키는게 아닌가?
-            //  (편해서 좋긴한데;)
+            //  1. 목표 속성에 전환된 데미지 누적
+            ResultPool.SetByType(Rule.TargetType, ResultPool.GetByType(Rule.TargetType) + ConvertedAmount);
+            TotalConvertedOut += ConvertedAmount;
+
         }
-
+        //  2. 루프 종료 후 전환된 총량 만큼 원본 속성 풀에서 차감
+        ResultPool.SetByType(SourceType, FMath::Max(0.0f, SourceAmount - TotalConvertedOut));
+        //  FMath::Max(0.0f, SourceAmount - TotalConvertedOut)값을 SourceType으로 전환
+        //  근데 전환을 한다고 하더라도, 번개피해나 냉기 피해가 조금씩 추가되는 경우가 있는데
+        //  이건 그냥 데미지 전부를 변환시키는게 아닌가?
+        //  (편해서 좋긴한데;)
     }
 	return ResultPool;
 }
@@ -224,7 +228,7 @@ void UMEODamageSubsystem::DistributeFinalDamageToPools(FMEODamagePacket& InOutPa
     //  물리 및 원소 피해는 에너지 보호막(ES)이 먼저 흡수하고,초과분만 생명력(Life)으로 전달
     const float NonChaosDamage = FinalPool.Physical + FinalPool.Fire + FinalPool.Cold + FinalPool.Lightning;
     const float AbsorbedByES = FMath::Min(AvailableES, NonChaosDamage);
-    const float OverflowToLife = FMath::Min(0.0f, NonChaosDamage - AbsorbedByES);
+    const float OverflowToLife = FMath::Max(0.0f, NonChaosDamage - AbsorbedByES);
 
     //  카오스 피해는 에너지 보호막을 우회하여 생명력에 직접피해
     InOutPacket.FinalDamageToEnergyShield = AbsorbedByES;
