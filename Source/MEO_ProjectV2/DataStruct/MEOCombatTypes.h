@@ -253,3 +253,65 @@ struct FMEOSpiritReservationEntry
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spirit")
 	float ReservedAmount = 0.0f;
 };
+
+//  6대 원소,물리 상태이상 및 군중제어(CC) 구분
+UENUM(BlueprintType)
+enum class EMEOAilmentType : uint8
+{
+    None,
+    Ignite,         //  점화: 화염 지속 피해 (비중첩, 최고 위력 우선)
+    Poision,        //  중독: 카오스/물리 기반 중첩 지속 피해 (무한 중첩)
+    Bleed,          //  출혈: 물리 기반 지속 피해(대상 이동시 추가증폭)
+    Shock,          //  감전: 대상이 받는 모든 전기 피해 증폭 디버프 (비중첩)
+    Freeze,         //  동결: 행동 속도 0% 고정 하드CC (동결 수치가 중첩될수록 행동 속도가 느려지고 100%가 되면 고정 하드 CC)
+    Stun,           //  기절: 순간 경직 및 시전 캔슬 CC
+};
+
+//  상태이상 유발 판정 시 대상의 저항 및 시전자 의 확률 보정 입력 구조체
+USTRUCT(BlueprintType)
+struct FMEOAilmentEvaluationParams
+{
+    GENERATED_BODY()
+
+    //  대상의 상태이상 한계치 (일반적으로 대상의 최대 생명력 기반,추가 스텟으로 늘릴수있을 예정)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ailment")
+    float TargetAilmentThreshold = 1000.0f;
+    
+    //  패시브/장비의 상태이상 유발 확률 보너스 (0.0 ~ 1.0)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ailment")
+    float AilmentChanceBonus = 0.0f;
+
+    //  상태이상 지속시간 배율 (기본 1.0)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ailment")
+    float DurationMultiplier = 1.0f;
+
+    //  상태이상 효과(DoT 피해량 / 감전 증폭률)배율 (기본 1.0)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ailment")
+    float MagnitudeMultiplier = 1.0f;
+
+};
+
+//  월드 내 액터에게 현재 부여되는 틱(Tick)을 들고 있는 활성 상태이상 인스턴스
+USTRUCT(BlueprintType)
+struct FMEOActiveAilment
+{
+    GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadOnly, Category = "Ailment")
+    EMEOAilmentType AilmentType = EMEOAilmentType::None;
+
+    //  상태이상을 유발한 공격자 참조 (처치 귀속 및 트리거 이벤트용)
+    UPROPERTY(BlueprintReadOnly, Category = "Ailment")
+    TWeakObjectPtr<AActor> InstigatorActor = nullptr;
+
+    //  상태이상 위력 (점화/중독/출혈 = 초당 피해량, 감전 = 받는 피해 증가율 예:0.20f)
+    UPROPERTY(BlueprintReadOnly, Category = "Ailment")
+    float Magnitude = 0.0f;
+
+    //  남은 지속 시간 (초)
+    UPROPERTY(BlueprintReadOnly, Category = "Ailment")
+    float RemainingDuration = 0.0f;
+
+    //  DoT 틱 간격 누적 타이머 (예: 0.25초마다 데미지 갱신)
+    float TickAccumulator = 0.0f;
+};
