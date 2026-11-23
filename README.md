@@ -17,6 +17,9 @@ Unreal Engine 5 C++ 기반 쿼터뷰 액션 RPG 프레임워크 포트폴리오�
 * **[Layer 2 (2부-A): 주사위 및 엔트로피 난수 엔진 명세](./Docs/Layer_2_(2부-A)_주사위_및_엔트로피_난수_엔진_명세_20261122.md)**
   * `UMEODiceSubsystem`: 언리얼 표준 `FRandomStream` 기반 `NdX + C` 주사위, 행운/불운(Advantage) 판정 및 가중치 추첨
   * 엔트로피(PRNG) 누적·이월 알고리즘을 통한 방어 판정 불운 방지 및 공격·드랍 순수 난수(True RNG) 분리 설계
+* **[Layer 2 (2부-B): 상태이상 판정 및 DoT/CC 틱 제어 명세](./Docs/Layer_2_(2부-B)_상태이상_판정_및_DoT_CC_틱_제어_명세.md)**
+  * `UMEOAilmentSubsystem`: `UTickableWorldSubsystem` 기반 중앙 집중식 0.25초 주기 DoT 정산 및 타이머 제어
+  * 6대 상태이상(점화·중독·출혈·감전·동결·기절) 판정 규칙 및 중첩/최고 위력 우선 갱신 파이프라인
 * **[SubSystem: 오브젝트 풀링 시스템](./Docs/SubSystem_ObjectPooling.md)** *(작성 예정)*
   * `UMEOPoolingSubsystem` 기반 런타임 액터 재사용 및 GC 스파이크 방지
 
@@ -32,6 +35,7 @@ Unreal Engine 5 C++ 기반 쿼터뷰 액션 RPG 프레임워크 포트폴리오�
   * `MEODamageSubsystem`: 6단계 데미지 파이프라인 연산 엔진 (`UWorldSubsystem`)
   * `MEOResourceSubsystem`: 스킬 자원 차감 및 정신력(Spirit) 점유 관리 (`UWorldSubsystem`)
   * `MEODiceSubsystem`: `FRandomStream` 기반 주사위, 엔트로피 불운 방지, 가중치 추첨 엔진 (`UWorldSubsystem`)
+  * `UMEOAilmentSubsystem` (`MEOAilmentSubsystem`): 6대 상태이상 판정 및 DoT/CC 틱 매니저 (`UTickableWorldSubsystem`)
   * `MEOPoolingSubsystem`: 월드 서브시스템 기반 액터 풀링 매니저 (`UWorldSubsystem`)
 
 ---
