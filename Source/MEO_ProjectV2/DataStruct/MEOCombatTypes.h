@@ -315,3 +315,93 @@ struct FMEOActiveAilment
     //  DoT 틱 간격 누적 타이머 (예: 0.25초마다 데미지 갱신)
     float TickAccumulator = 0.0f;
 };
+
+//  액터별 스킬 쿨타임 및 충전(Charge) 상태 엔트리
+USTRUCT(BlueprintType)
+struct FMEOCooldownEntry
+{
+    GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadOnly, Category = "Cooldown")
+    FName SkillId = NAME_None;
+
+    //  남은 쿨타임 (초)
+    UPROPERTY(BlueprintReadOnly, Category = "Cooldown")
+    float RemainingTime = 0.0f;
+
+    //  전체 쿨타임 기준치 (UI 쿨타임 게이지 비율 계산용)
+    UPROPERTY(BlueprintReadOnly, Category = "Cooldown")
+    float TotalDuration = 0.0f;
+};
+
+//  메타 젬(발동형 보조 젬) 트리거 조건 구분
+UENUM(BlueprintType)
+enum class EMEOTriggerCondition : uint8
+{
+    None,
+    OnCriticalHit,          //  치명타 적중 시 발동      (Cast on Critical Strike)  
+    OnKill,                 //  적 처치 시 발동          (Cast on Kill)
+    OnDamageTaken,          //  누적 피해량 도달 시 발동 (Cast when Damage Taken)
+    OnAilmentInflicted      //  상태이상 유발 시 발동    (Cast on Freeze/Shock/Ignite)
+};
+
+//  전투 이벤트 발생 시 트리거 서브시스템으로 전달되는 컨텍스트 패킷
+USTRUCT(BlueprintType)
+struct FMEOTriggerEventContext
+{
+    GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadWrite, Category = "Trigger")
+    EMEOTriggerCondition Condition = EMEOTriggerCondition::None;
+
+    //  이벤트를 발생시킨 주체 (예: 치명타를 때린 공격자, 또는 피해를 입은 피격자)
+    UPROPERTY(BlueprintReadWrite, Category = "Trigger")
+    TObjectPtr<AActor> SourceActor = nullptr;
+
+    //  이벤트 대상 액터 (스킬 발동 타겟 지정용)
+    UPROPERTY(BlueprintReadWrite, Category = "Trigger")
+    TObjectPtr<AActor> TargetActor = nullptr;
+
+    //  이벤트 발생 좌표 (지면 타겟팅 스킬 발동요)
+    UPROPERTY(BlueprintReadWrite, Category = "Trigger")
+    FVector EventLocation = FVector::ZeroVector;
+
+    //  발생 피해량 또는 누적 에너지 수치 (OnDamageTaken 임계치 계산용)
+    UPROPERTY(BlueprintReadWrite, Category = "Trigger")
+    float EventValue = 0.0f;
+};
+
+//  액터에 장착된 개별 메타 젬(자동 발동 링크) 등록 정보
+USTRUCT(BlueprintType)
+struct FMEOMetaTriggerBinding
+{
+    GENERATED_BODY()
+
+    //  고유 바인딩 식별자 (예: "Slot1_CoC_FireBall")
+    UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Trigger")
+    FName BindingId = NAME_None;
+
+    //  발동 조건
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
+    EMEOTriggerCondition TriggerCondition = EMEOTriggerCondition::None;
+
+    //  조건 충족 시 자동 시전할 액티브 스킬 데이터 테이블 행 이름
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
+    FName TriggeredSkillRowName = NAME_None;
+
+    //  발동 확률 (0.0~1.0)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
+    float TriggerChance = 1.0f;
+
+    //  무한 연쇄 방지용 내부 쿨타임 (Internal Cooldown, 초 단위)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
+    float InternalCooldown = 0.15f;
+
+    //  피해 누적형 트리거(CWDT)의 발동 요구 임계치 (0이면 즉시 발동)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger")
+    float RequiredAccumulatedValue = 0.0f;
+
+    //  현재까지 누적된 피해/에너지 수치
+    float CurrentAccumulatedValue = 0.0f;
+
+};
