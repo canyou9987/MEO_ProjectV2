@@ -23,6 +23,9 @@ Unreal Engine 5 C++ 기반 쿼터뷰 액션 RPG 프레임워크 포트폴리오�
 * **[Layer 2 (3부-A): 시간, 쿨타임 및 행동 속도 제어 명세](./Docs/Layer_2_(3부-A)_시간_쿨타임_및_행동_속도_제어_명세.md)**
   * `UMEOTimeSubsystem`: 유휴 상태 자동 틱 정지(`ActiveCooldownsMap.Num() > 0`) 기반 스킬/내부 쿨타임 일괄 차감
   * 동결(`Freeze`) 상태이상 시 행동 속도 `0%` 최우선 고정 및 가감속 모디파이어 곱연산 누적 파이프라인
+* **[Layer 2 (3부-B): 이벤트 트리거 및 메타 젬 파이프라인 명세](./Docs/Layer_2_(3부-B)_이벤트_트리거_및_메타_젬_파이프라인_명세.md)**
+  * `UMEOTriggerSubsystem`: 치명타·처치·누적 피격·상태이상 조건부 자동 스킬 시전 파이프라인
+  * 동기 재귀 호출 깊이 제한(`MAX_TRIGGER_RECURSION_DEPTH`) 및 내부 쿨타임(`InternalCooldown`) 이중 무한 루프 방지
 * **[SubSystem: 오브젝트 풀링 시스템](./Docs/SubSystem_ObjectPooling.md)** *(작성 예정)*
   * `UMEOPoolingSubsystem` 기반 런타임 액터 재사용 및 GC 스파이크 방지
 
@@ -40,6 +43,7 @@ Unreal Engine 5 C++ 기반 쿼터뷰 액션 RPG 프레임워크 포트폴리오�
   * `MEODiceSubsystem`: `FRandomStream` 기반 주사위, 엔트로피 불운 방지, 가중치 추첨 엔진 (`UWorldSubsystem`)
   * `MEOAilmentSubsystem`: 6대 상태이상 판정 및 DoT/CC 틱 매니저 (`UTickableWorldSubsystem`)
   * `MEOTimeSubsystem`: 스킬 쿨타임, 행동 속도 배율 및 히트스톱 제어 매니저 (`UTickableWorldSubsystem`)
+  * `MEOTriggerSubsystem`: 전투 이벤트 기반 메타 젬 자동 시전 및 재귀 차단 매니저 (`UWorldSubsystem`)
   * `MEOPoolingSubsystem`: 월드 서브시스템 기반 액터 풀링 매니저 (`UWorldSubsystem`)
 
 ---
