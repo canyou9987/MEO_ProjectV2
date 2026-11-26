@@ -26,6 +26,9 @@ Unreal Engine 5 C++ 기반 쿼터뷰 액션 RPG 프레임워크 포트폴리오�
 * **[Layer 2 (3부-B): 이벤트 트리거 및 메타 젬 파이프라인 명세](./Docs/Layer_2_(3부-B)_이벤트_트리거_및_메타_젬_파이프라인_명세.md)**
   * `UMEOTriggerSubsystem`: 치명타·처치·누적 피격·상태이상 조건부 자동 스킬 시전 파이프라인
   * 동기 재귀 호출 깊이 제한(`MAX_TRIGGER_RECURSION_DEPTH`) 및 내부 쿨타임(`InternalCooldown`) 이중 무한 루프 방지
+* **[Layer 2 (4부-A): 루트 드랍 및 접사 추첨 엔진 명세](./Docs/Layer_2_(4부-A)_루트_드랍_및_접사_추첨_엔진_명세.md)**
+  * `UMEODropSubsystem`: IIQ/IIR 스탯 반영 드랍 횟수·희귀도 가중치 산출 및 서버 권한 `FGuid` 발급
+  * 아이템 레벨(`iLvl`) 및 중복 스탯 그룹(`StatTag`) 필터링 기반 3중 접사 롤링 파이프라인
 * **[SubSystem: 오브젝트 풀링 시스템](./Docs/SubSystem_ObjectPooling.md)** *(작성 예정)*
   * `UMEOPoolingSubsystem` 기반 런타임 액터 재사용 및 GC 스파이크 방지
 
@@ -35,6 +38,7 @@ Unreal Engine 5 C++ 기반 쿼터뷰 액션 RPG 프레임워크 포트폴리오�
 * **`DataStruct/`**
   * `MEODataTypes.h`: 공용 열거형(`EMEOUIWindowType`, `EMEOEquipmentSlot`) 및 세이브/인벤토리 직렬화 구조체
   * `MEOCombatTypes.h`: 5대 피해 속성(`EMEODamageType`), 데미지 패킷(`FMEODamagePacket`), 자원·정신력, 상태이상 및 쿨타임·트리거 구조체
+  * `MEOItemTypes.h`: 아이템 희귀도(`EMEOItemRarity`), 접사 슬롯(`EMEOAffixSlot`), 화폐 유형(`EMEOCurrencyType`) 및 루트 테이블 구조체
 * **`GameMode/`**: 세션 코어(`MEOGameMode`, `MEOGameState`, `MEOPlayerState`), 입력/RPC 제어(`MEOPlayerController`), 독립 카메라(`MEOCameraPawn`), 뷰 매니저(`MEOHUD`)
 * **`SaveGame/`**: 로컬 바이너리 직렬화(`MEOSaveGame`) 및 앱 생명주기 데이터 캐싱(`MEOGameInstance`)
 * **`SubSystem/`**
@@ -44,6 +48,7 @@ Unreal Engine 5 C++ 기반 쿼터뷰 액션 RPG 프레임워크 포트폴리오�
   * `MEOAilmentSubsystem`: 6대 상태이상 판정 및 DoT/CC 틱 매니저 (`UTickableWorldSubsystem`)
   * `MEOTimeSubsystem`: 스킬 쿨타임, 행동 속도 배율 및 히트스톱 제어 매니저 (`UTickableWorldSubsystem`)
   * `MEOTriggerSubsystem`: 전투 이벤트 기반 메타 젬 자동 시전 및 재귀 차단 매니저 (`UWorldSubsystem`)
+  * `MEODropSubsystem`: IIQ/IIR 기반 루트 드랍 및 접사 롤링 엔진 (`UWorldSubsystem`)
   * `MEOPoolingSubsystem`: 월드 서브시스템 기반 액터 풀링 매니저 (`UWorldSubsystem`)
 
 ---
