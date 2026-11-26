@@ -83,7 +83,7 @@ struct FMEOAffixTableRow : public FTableRowBase
 
     //  해당 티어 접사가 등장하기 위한 최소 아이템 레벨(iLvl) 요구치
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Affix")
-    int32 RequiredItem = 1;
+    int32 RequiredItemLevel = 1;
 
     //  등장 가중치 (높을수록 자주 출현)
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Affix")
