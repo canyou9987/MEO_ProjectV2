@@ -4,8 +4,12 @@
 
 접사 추첨 로직은 `UMEODropSubsystem::RollRandomAffixFromTable()`을 재사용하여 드랍 장비와 크래프팅 장비 간의 규칙 일관성을 유지하며, 사전 검증 API(`CanApplyCurrencyOrb`)를 분리해 클라이언트 UI 툴팁과 서버 권한 실행 로직을 명확히 구분했습니다.
 
-### 인게임 크래프팅 동작 레퍼런스 (`시퀀스 01.mp4`)
-* 마법 등급 지팡이에 **제왕의 오브**를 적용해 희귀 등급으로 승급한 뒤, **엑잘티드 오브**로 접두·접미사를 최대 슬롯까지 채우고 **신비학자의 식각기**로 퀄리티를 부여하며 상세 정보(`Alt`)로 각 접사의 티어(`T1~T5`)와 수치 롤링 범위를 검증하는 흐름을 기준으로 설계했습니다.
+### 크래프팅 동작 레퍼런스 영상
+* **시연 영상:** [시퀀스 01.mp4](./시퀀스_01.mp4)
+  * `00:03 ~ 00:05`: **제왕의 오브(Regal Orb)** 사용 → 마법(Magic) 지팡이가 희귀(Rare) 등급으로 승급하며 접사 추가
+  * `00:06 ~ 00:10`: **엑잘티드 오브(Exalted Orb)** 연속 사용 → 희귀 장비의 빈 슬롯에 신규 접사(번개 피해 증가, 주문 스킬 레벨 +2 등) 추가
+  * `00:11 ~ 00:12`: **신비학자의 식각기(Arcanist's Etcher)** 사용 → 캐스터 무기 퀄리티(`+4%`) 상승
+  * `00:13 ~ 00:15`: **바알 오브(Vaal Orb)** 사용 → 영구 타락(`Corrupted`) 잠금 및 접사 변이 발생
 
 ---
 
@@ -69,13 +73,13 @@
 
 ---
 
-## 5. 추후 확장 로드맵 (레퍼런스 기반 크래프팅·소켓·퀄리티 확장안)
+## 5. 향후 크래프팅 및 소켓 확장 로드맵
 
-코어 7종 화폐 파이프라인 구축 이후, 인게임 레퍼런스 분석을 바탕으로 다음 4가지 보조 크래프팅 시스템을 확장 후보로 정의했습니다.
+코어 파이프라인 안정화 이후 `FMEOInventoryItemInstance`와 `FMEOSocketedSkillInstance` 구조체 필드를 확장하여 수용 예정인 보조 제작 시스템입니다.
 
-| 확장 분류 | 레퍼런스 화폐 예시 | 동작 메커니즘 | 데이터 구조 확장 포인트 (`MEODataTypes.h`) |
+| 확장 분류 | 레퍼런스 아이템 | 구조체 확장 필드 및 구현 방향 | 레퍼런스 스크린샷 |
 | :--- | :--- | :--- | :--- |
-| **확정 접사 부여 (Essence)** | 상위 전투의 에센스 (`Greater Essence of Battle`) | • 마법 → 희귀 등급 업그레이드와 동시에 무작위 추첨 대신 **에센스에 지정된 확정 `AffixRowName` 1개를 강제 부여** | `ApplyEssenceOrb(TargetItem, GuaranteedAffixRow)` 오버로드 추가 |
-| **소켓 및 룬 홈 확장** | • 하위 쥬얼러 오브 (`Lesser Jeweller's Orb`)<br>• 숙련공의 오브 (`Artificer's Orb`) | • 스킬 젬의 보조 젬 소켓 상한 확장 (`2 → 3 → 4 → 5홈`)<br>• 무기·방어구에 룬/영혼 핵 장착용 증강물 홈 추가 | `FMEOSocketedSkillInstance`에 `MaxSupportSockets`, `FMEOInventoryItemInstance`에 `RuneSockets` 필드 추가 |
-| **퀄리티 향상 (Quality)** | • 대장장이의 숫돌 (`Blacksmith's Whetstone`)<br>• 세공사의 프리즘 (`Gemcutter's Prism`)<br>• 유리직공의 방울 (`Glassblower's Bauble`) | • 무기·방어구·스킬 젬·플라스크의 `Quality` 수치를 상한(`+20%`)까지 단계적 증가시켜 기본 물리 피해·방어도·젬 효과 증폭 | `FMEOInventoryItemInstance` 및 `FMEOSocketedSkillInstance`에 `int32 Quality = 0` 필드 추가 |
-| **미확인 아이템 식별** | 감정 주문서 (`Scroll of Wisdom`) | • 희귀/고유 등급 드랍 시 `bIsIdentified = false` 상태로 생성 후, 감정 주문서 사용 시 접사 목록(`Modifiers`) 공개 | `FMEOInventoryItemInstance`에 `bool bIsIdentified = true` 플래그 추가 |
+| **확정 접사 부여 (에센스)** | 상위 전투의 에센스 (`Greater Essence`) | • 마법 → 희귀 승급 시 무작위 추첨 대신 에센스 데이터 테이블에 지정된 특정 `AffixRowName`을 100% 확정 부여 | ![에센스](./Path_of_Exile_2_Screenshot_2026.11.28_-_07.39.32.91.png) |
+| **소켓 및 홈 확장** | 하위 쥬얼러 오브 (`Lesser Jeweller's Orb`)<br>숙련공의 오브 (`Artificer's Orb`) | • `FMEOSocketedSkillInstance::MaxSupportSockets` 확장 (`2 → 3 → 4 → 5`)<br>• `FMEOInventoryItemInstance::RuneSockets` 추가 및 룬 장착 슬롯 개방 | ![쥬얼러 오브](./Path_of_Exile_2_Screenshot_2026.11.28_-_07.39.04.74.png)<br>![숙련공의 오브](./Path_of_Exile_2_Screenshot_2026.11.28_-_07.39.07.57.png) |
+| **퀄리티(Quality) 향상** | 대장장이의 숫돌 (`Whetstone`)<br>세공사의 프리즘 (`Gemcutter's Prism`)<br>유리직공의 방울 (`Bauble`) | • `ItemQuality` (`0 ~ 20%`) 필드 추가 및 기본 물리 피해·방어도·플라스크 회복량·스킬 젬 보너스 곱연산 연동 | ![숫돌](./Path_of_Exile_2_Screenshot_2026.11.28_-_07.39.15.54.png)<br>![프리즘](./Path_of_Exile_2_Screenshot_2026.11.28_-_07.39.17.45.png)<br>![방울](./Path_of_Exile_2_Screenshot_2026.11.28_-_07.39.20.49.png) |
+| **미확인 아이템 식별** | 감정 주문서 (`Scroll of Wisdom`) | • `bIsIdentified` 플래그 추가 (드랍 시 미확인 상태로 생성 후 감정 주문서 사용 시 접사 툴팁 공개 및 장착 허용) | ![감정 주문서](./Path_of_Exile_2_Screenshot_2026.11.28_-_07.39.18.84.png) |
