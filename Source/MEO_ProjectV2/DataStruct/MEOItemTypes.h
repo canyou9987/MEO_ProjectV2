@@ -131,3 +131,17 @@ struct FMEOLootGenerationContext
     //  플레이어 + 맵 모디파이어의 아이템 희귀도 증가(IIR)합산 (예: 0.8f = 80% 증가)
     float IncreasedItemRarity = 0.0f;
 };
+
+//  화폐 오브 크래프팅 실행 결과 상태 코드
+UENUM(BlueprintType)
+enum class EMEOCraftingResult : uint8
+{
+    Success,                //  크래프팅 성공
+    InvalidItem,            //  유효하지 않는 아이템 인스턴스
+    ItemIsCorrupted,        //  타락(Corrupted) 상태라 변경 불가
+    InvalidRarityForOrb,    //  해당 화폐를 사용할 수 없는 희귀도 등급
+    AffixSlotFull,          //  접두/접미사 슬룻이 모두 가득 참
+    NoAffixToModify,        //  제거/재굴림 접사가 존재하지 않음
+    NoVaildAffixInPool,     //  아이템 레벨(iLvl) 조건에 맞는 접사 후보가 없음
+    NotServerAuthority      //  클라이언트 권한차단
+};

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "MEO_ProjectV2/SaveGame/MEOGameInstance.h"
@@ -10,7 +10,7 @@ void UMEOGameInstance::Init()
 {
 	Super::Init();
 
-	//	°ÔÀÓ ºÎÆÃ ½Ã ±âÁ¸ ¼¼ÀÌºê ÆÄÀÏÀÌ ÀÖÀ¸¸é ·ÎµåÇÏ¿© CachedSaveData ÃÊ±âÈ­
+	//	ê²Œì„ ë¶€íŒ… ì‹œ ê¸°ì¡´ ì„¸ì´ë¸Œ íŒŒì¼ì´ ìˆìœ¼ë©´ ë¡œë“œí•˜ì—¬ CachedSaveData ì´ˆê¸°í™”
 	FMEOSaveGameData LoadedData;
 	if (LoadCharacterDataFromSlot(DefaultSaveSlotName, LoadedData))
 	{
@@ -20,7 +20,7 @@ void UMEOGameInstance::Init()
 
 void UMEOGameInstance::Shutdown()
 {
-	//	°ÔÀÓ Á¾·á ¶Ç´Â °­Á¦ ÀÌÅ» ÀÛÀü ¸¶Áö¸· Ä³½Ã µ¥ÀÌÅÍ¸¦ µğ½ºÅ©¿¡ Á÷·ÄÈ­ ¹é¾÷
+	//	ê²Œì„ ì¢…ë£Œ ë˜ëŠ” ê°•ì œ ì´íƒˆ ì‘ì „ ë§ˆì§€ë§‰ ìºì‹œ ë°ì´í„°ë¥¼ ë””ìŠ¤í¬ì— ì§ë ¬í™” ë°±ì—…
 	if (UMEOSaveGame* SaveObj = Cast<UMEOSaveGame>(UGameplayStatics::CreateSaveGameObject(UMEOSaveGame::StaticClass())))
 	{
 		SaveObj->SaveData = CachedSaveData;
@@ -37,7 +37,7 @@ bool UMEOGameInstance::SaveCharacterDataToSlot(const FString& SlotName , AMEOPla
 		return false;
 	}
 	
-	//	PlayerState(SSOT)°¡ º¸¿©ÈÆ ÃÖ½Å ¼ºÀå/ÀÎº¥Åä¸®/Àåºñ/ÆĞ½Ãºê µ¥ÀÌÅÍ¸¦ SaveGameData ±¸Á¶Ã¼·Î µ¿±âÈ­
+	//	PlayerState(SSOT)ê°€ ë³´ì—¬í›ˆ ìµœì‹  ì„±ì¥/ì¸ë²¤í† ë¦¬/ì¥ë¹„/íŒ¨ì‹œë¸Œ ë°ì´í„°ë¥¼ SaveGameData êµ¬ì¡°ì²´ë¡œ ë™ê¸°í™”
 	
 	CachedSaveData.SavedLevelData = SourcePlayerState->LevelData;
 	CachedSaveData.SavedInventory = SourcePlayerState->MainInventoryData;
@@ -48,14 +48,14 @@ bool UMEOGameInstance::SaveCharacterDataToSlot(const FString& SlotName , AMEOPla
 	CachedSaveData.WeaponSet2PassiveNodes = SourcePlayerState->WeaponSet2PassiveNodes;
 	
 
-	//	AMEOPlayerState°¡ ±¸¼ºµÇ±â Àü±îÁö´Â ÁÖ¼® Ã³¸®. -> ÇØÁ¦ ¿Ï·á
-	//	ÇÃ·¹ÀÌ¾î°¡ ÇÃ·¹ÀÌÁß¿¡ µ¥ÀÌÅÍ¸¦ °¡Áö°í ÀÖ´Â°÷Àº PlayerState±¸³ª?
-	//	Ä³¸¯ÅÍ°¡ »ç¸ÁÇÏ¸é ¹°¸®¿Í ¾Ö´Ï¸ÅÀÌ¼Ç »óÅÂ Á¤¸®¸¦ À§ÇØ Destroy()¸¦ ÇÏ¿© ÆÄ±«ÇÏ´Âµ¥,
-	//	±× °úÁ¤¿¡¼­ Ä³¸¯ÅÍ°¡ ¾ÆÀÌÅÛÁ¤º¸¸¦ °¡Áö°í ÀÖ´Ù¸é ±× Á¤º¸´Â Áõ¹ßÇÏ±â ¶§¹®¿¡
-	//	·¹º§(¼¼¼Ç)ÀÌ ³¡³¯¶§±îÁö À¯Áö½ÃÅ³·Á¸é PlayerState¿¡¼­ Á¤º¸¸¦ °ü¸®,¸ÖÆ¼ÇÃ·¹ÀÌ ÆÄÆ¼¿ø Á¤º¸ °øÀ¯µµ ÇÏ¸é¼­
-	//	(´Ü, Ã¼·Â/¸¶³ª/ÀÌµ¿¼Óµµ °°Àº ½Ç½Ã°£ ÀüÅõ ¿¬»êÀº Ä³¸¯ÅÍ¿¡ ºÙ´Â Layer 3 ÄÄÆ÷³ÍÆ®µéÀÌ PlayerState¿¡¼­ µ¥ÀÌÅÍ¸¦ º¹»ç¹Ş¾Æ ¼öÇà)
+	//	AMEOPlayerStateê°€ êµ¬ì„±ë˜ê¸° ì „ê¹Œì§€ëŠ” ì£¼ì„ ì²˜ë¦¬. -> í•´ì œ ì™„ë£Œ
+	//	í”Œë ˆì´ì–´ê°€ í”Œë ˆì´ì¤‘ì— ë°ì´í„°ë¥¼ ê°€ì§€ê³  ìˆëŠ”ê³³ì€ PlayerStateêµ¬ë‚˜?
+	//	ìºë¦­í„°ê°€ ì‚¬ë§í•˜ë©´ ë¬¼ë¦¬ì™€ ì• ë‹ˆë§¤ì´ì…˜ ìƒíƒœ ì •ë¦¬ë¥¼ ìœ„í•´ Destroy()ë¥¼ í•˜ì—¬ íŒŒê´´í•˜ëŠ”ë°,
+	//	ê·¸ ê³¼ì •ì—ì„œ ìºë¦­í„°ê°€ ì•„ì´í…œì •ë³´ë¥¼ ê°€ì§€ê³  ìˆë‹¤ë©´ ê·¸ ì •ë³´ëŠ” ì¦ë°œí•˜ê¸° ë•Œë¬¸ì—
+	//	ë ˆë²¨(ì„¸ì…˜)ì´ ëë‚ ë•Œê¹Œì§€ ìœ ì§€ì‹œí‚¬ë ¤ë©´ PlayerStateì—ì„œ ì •ë³´ë¥¼ ê´€ë¦¬,ë©€í‹°í”Œë ˆì´ íŒŒí‹°ì› ì •ë³´ ê³µìœ ë„ í•˜ë©´ì„œ
+	//	(ë‹¨, ì²´ë ¥/ë§ˆë‚˜/ì´ë™ì†ë„ ê°™ì€ ì‹¤ì‹œê°„ ì „íˆ¬ ì—°ì‚°ì€ ìºë¦­í„°ì— ë¶™ëŠ” Layer 3 ì»´í¬ë„ŒíŠ¸ë“¤ì´ PlayerStateì—ì„œ ë°ì´í„°ë¥¼ ë³µì‚¬ë°›ì•„ ìˆ˜í–‰)
 
-	//	USaveGame Á÷·ÄÈ­ °´Ã¼ »ı¼º ¹× µ¥ÀÌÅÍ ÁÖÀÔ
+	//	USaveGame ì§ë ¬í™” ê°ì²´ ìƒì„± ë° ë°ì´í„° ì£¼ì…
 	UMEOSaveGame* SaveObj = Cast<UMEOSaveGame>(UGameplayStatics::CreateSaveGameObject(UMEOSaveGame::StaticClass()));
 	if (!SaveObj)
 	{
@@ -73,13 +73,13 @@ bool UMEOGameInstance::LoadCharacterDataFromSlot(const FString& SlotName, FMEOSa
 {
 	const FString TargetSlot = SlotName.IsEmpty() ? DefaultSaveSlotName : SlotName;
 
-	//	ÇØ´ç ½½·í¿¡ ¼¼ÀÌºê ÆÄÀÏÀÌ Á¸ÀçÇÏ´ÂÁö ¸ÕÀú °ËÁõ
+	//	í•´ë‹¹ ìŠ¬ë£»ì— ì„¸ì´ë¸Œ íŒŒì¼ì´ ì¡´ì¬í•˜ëŠ”ì§€ ë¨¼ì € ê²€ì¦
 	if (!UGameplayStatics::DoesSaveGameExist(TargetSlot, 0)) 
 	{
 		return false;
 	}
 
-	// ¹ÙÀÌ³Ê¸® ÆÄÀÏ ¿ªÁ÷·ÄÈ­ ¹× ¸Ş¸ğ¸® Ä³½Ã °»½Å
+	// ë°”ì´ë„ˆë¦¬ íŒŒì¼ ì—­ì§ë ¬í™” ë° ë©”ëª¨ë¦¬ ìºì‹œ ê°±ì‹ 
 	if (UMEOSaveGame* LoadObj = Cast<UMEOSaveGame>(UGameplayStatics::LoadGameFromSlot(TargetSlot, 0)))
 	{
 		OutSaveData = LoadObj->SaveData;
@@ -89,3 +89,6 @@ bool UMEOGameInstance::LoadCharacterDataFromSlot(const FString& SlotName, FMEOSa
 
 	return false;
 }
+
+//  ì—¬ê¸°ê°€ ë ˆë²¨ì´ ì´ë™í• ë•Œë§ˆë‹¤ ê°€ì§€ê³  ìˆì–´ì•¼í•  ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” ê³³ì´ë¼ê³  í•œë‹¤.
+//  ë³´ìˆ˜ê°€ í•„ìš”í• ê²ƒ ê°™ê¸´í•˜ë‹¤.

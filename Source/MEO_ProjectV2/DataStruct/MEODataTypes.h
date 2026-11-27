@@ -1,206 +1,215 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MEO_ProjectV2/DataStruct/MEOItemTypes.h"
 #include "MEODataTypes.generated.h"
 
-//	UI Åä±Û °¡´É
-//	´ÜÃàÅ° ÀÔ·ÂÀ¸·Î ¿­°í ´İÀ» ¼ö ÀÖ´Â ¸ğµ¨(Model) UI Ã¢¿¡ ´ëÇÑ ¿­°ÅÇü
-//	MEOPlayerController¿Í MEOHUD °£ ¼øÈ¯ ÂüÁ¶ ¹æÁö¸¦ À§ÇØ °ø¿ë ÇØ´õ¿¡¼­ Á¤ÀÇ
+//	UI í† ê¸€ ê°€ëŠ¥
+//	ë‹¨ì¶•í‚¤ ì…ë ¥ìœ¼ë¡œ ì—´ê³  ë‹«ì„ ìˆ˜ ìˆëŠ” ëª¨ë¸(Model) UI ì°½ì— ëŒ€í•œ ì—´ê±°í˜•
+//	MEOPlayerControllerì™€ MEOHUD ê°„ ìˆœí™˜ ì°¸ì¡° ë°©ì§€ë¥¼ ìœ„í•´ ê³µìš© í•´ë”ì—ì„œ ì •ì˜
 UENUM(BlueprintType)
 enum class EMEOUIWindowType : uint8
 {
-	Inventory,		//	ÀÎº¥Åä¸® ¹× ÀåºñÃ¢																			(´ÜÃàÅ° : I )
-	PassiveTree,	//	ÆĞ½Ãºê ½ºÅ³ Æ®¸®																			(´ÜÃàÅ° : P )
-	SkillMenu,		//	½ºÅ³ Áª ¹× º¸Á¶ Áª ¼ÒÄÏÃ¢																	(´ÜÃàÅ° : G )
-	CharacterStats, //	Ä³¸¯ÅÍ »ó¼¼ ½ºÅİ Ã¢																			(´ÜÃàÅ° : T )
-	WorldMap		//	¿ùµå¸Ê ¹× ÀÎ½ºÅÏ½º Á¤º¸																		(´ÜÃàÅ° : M  ) 
-	//	»ó¼¼Á¤º¸ ¸¦ Ãâ·ÂÇÏ´Â ÅØ½ºÆ® (Ã¢ X) (ÀÎ½ºÅÏ½º Á¤º¸,Ã¼·Â,º¸È£¸·,°æÇèÄ¡ µî ¼ıÀÚÇ¥±â ¾ÈµÇÀÖ´Â°Íµé ¼ıÀÚ·á Ç¥±â)  (´ÜÃàÅ° : Alt )
-	//	ÀÎ½ºÅÏ½º ¸Ê(¿ùµå ¸Ê X )À» ¹İÅõ¸íÇÏ°Ô È­¸é Áß¾Ó¿¡ ¶Ù¿ì°í ÀÎ½ºÅÏ½º Á¤º¸ ¿À¸¥ÂÊ »ó´Ü ¹Ì´Ï¸Ê ¿·¿¡ Ç¥±â			(´ÜÃàÅ° : Tab ) 
-	//	±âÅ¸ UIÃ¢Àº ÃßÈÄ....
+	Inventory,		//	ì¸ë²¤í† ë¦¬ ë° ì¥ë¹„ì°½																			(ë‹¨ì¶•í‚¤ : I )
+	PassiveTree,	//	íŒ¨ì‹œë¸Œ ìŠ¤í‚¬ íŠ¸ë¦¬																			(ë‹¨ì¶•í‚¤ : P )
+	SkillMenu,		//	ìŠ¤í‚¬ ì ¬ ë° ë³´ì¡° ì ¬ ì†Œì¼“ì°½																	(ë‹¨ì¶•í‚¤ : G )
+	CharacterStats, //	ìºë¦­í„° ìƒì„¸ ìŠ¤í…Ÿ ì°½																			(ë‹¨ì¶•í‚¤ : T )
+	WorldMap		//	ì›”ë“œë§µ ë° ì¸ìŠ¤í„´ìŠ¤ ì •ë³´																		(ë‹¨ì¶•í‚¤ : M  ) 
+	//	ìƒì„¸ì •ë³´ ë¥¼ ì¶œë ¥í•˜ëŠ” í…ìŠ¤íŠ¸ (ì°½ X) (ì¸ìŠ¤í„´ìŠ¤ ì •ë³´,ì²´ë ¥,ë³´í˜¸ë§‰,ê²½í—˜ì¹˜ ë“± ìˆ«ìí‘œê¸° ì•ˆë˜ìˆëŠ”ê²ƒë“¤ ìˆ«ìë£Œ í‘œê¸°)  (ë‹¨ì¶•í‚¤ : Alt )
+	//	ì¸ìŠ¤í„´ìŠ¤ ë§µ(ì›”ë“œ ë§µ X )ì„ ë°˜íˆ¬ëª…í•˜ê²Œ í™”ë©´ ì¤‘ì•™ì— ë›°ìš°ê³  ì¸ìŠ¤í„´ìŠ¤ ì •ë³´ ì˜¤ë¥¸ìª½ ìƒë‹¨ ë¯¸ë‹ˆë§µ ì˜†ì— í‘œê¸°			(ë‹¨ì¶•í‚¤ : Tab ) 
+	//	ê¸°íƒ€ UIì°½ì€ ì¶”í›„....
 };
 
-//	Ä³¸¯ÅÍ Àåºñ Âø¿ë ºÎÀ§ ½Äº°ÀÚ (Dual Spec 1/2 ¹ø ¹«±â¼¼Æ® Æ÷ÇÔ)
+//	ìºë¦­í„° ì¥ë¹„ ì°©ìš© ë¶€ìœ„ ì‹ë³„ì (Dual Spec 1/2 ë²ˆ ë¬´ê¸°ì„¸íŠ¸ í¬í•¨)
 UENUM(BlueprintType)
 enum class EMEOEquipmentSlot : uint8
 {
 	None,
-	MainHand1,	//	ÁÖ¹«±â ¼¼Æ®1
-	OffHand1,	//	º¸Á¶¹«±â/¹æÆĞ ¼¼Æ®1
-	MainHand2,	//	ÁÖ¹«±â ¼¼Æ®2 (Weapon Swap ´ë»ó)
-	OffHand2,	//	º¸Á¶¹«±â/¹æÆĞ ¼¼Æ®2
-	Helmet,		//	ÇÛ¸Ë
-	BodyArmor,	//	°©¿Ê
-	Gloves,		//	Àå°©
-	Boots,		//	½Å¹ß
-	Amulet,		//	¸ñ°ÉÀÌ
-	RingLeft,	//	¿ŞÂÊ ¹İÁö
-	RingRight,	//	¿À¸¥ÂÊ ¹İÁö
-	Belt,		//	Çã¸®¶ì
+	MainHand1,	//	ì£¼ë¬´ê¸° ì„¸íŠ¸1
+	OffHand1,	//	ë³´ì¡°ë¬´ê¸°/ë°©íŒ¨ ì„¸íŠ¸1
+	MainHand2,	//	ì£¼ë¬´ê¸° ì„¸íŠ¸2 (Weapon Swap ëŒ€ìƒ)
+	OffHand2,	//	ë³´ì¡°ë¬´ê¸°/ë°©íŒ¨ ì„¸íŠ¸2
+	Helmet,		//	í•¼ë§·
+	BodyArmor,	//	ê°‘ì˜·
+	Gloves,		//	ì¥ê°‘
+	Boots,		//	ì‹ ë°œ
+	Amulet,		//	ëª©ê±¸ì´
+	RingLeft,	//	ì™¼ìª½ ë°˜ì§€
+	RingRight,	//	ì˜¤ë¥¸ìª½ ë°˜ì§€
+	Belt,		//	í—ˆë¦¬ë 
 
-	HealthFlask, // »ı¸í·Â ÇÃ¶ó½ºÅ©
-	ManaFlask,   // ¸¶³ª ÇÃ¶ó½ºÅ©
-	Charm1,      // È£½ÅºÎ ½½·Ô 1
-	Charm2,      // È£½ÅºÎ ½½·Ô 2
-	Charm3       // È£½ÅºÎ ½½·Ô 3
+	HealthFlask, // ìƒëª…ë ¥ í”Œë¼ìŠ¤í¬
+	ManaFlask,   // ë§ˆë‚˜ í”Œë¼ìŠ¤í¬
+	Charm1,      // í˜¸ì‹ ë¶€ ìŠ¬ë¡¯ 1
+	Charm2,      // í˜¸ì‹ ë¶€ ìŠ¬ë¡¯ 2
+	Charm3       // í˜¸ì‹ ë¶€ ìŠ¬ë¡¯ 3
 
-	// ¾ç¼Õ¹«±â ÀÏ°Ü¿ì MainHand1¶û OffHand1 µÑ´Ù ¾´´Ù°í Ç¥±âÇØ¾ßÇÏ³ª?
-	// MainHand1°ú OffHand1 ¾çÂÊ¿¡ ¶È°°Àº FMEOInventoryItemInstance¸¦ ³Ö¾îµÎ¸é
-	// Àåºñ ÇØÁ¦(Unequip)³ª ¼¼ÀÌºê/·Îµå ½Ã ¾ÆÀÌÅÛÀÌ 2°³·Î º¹»çµÉ °¡´É¼ºÀÌ ÀÖÀ¸¹Ç·Î
-	// ¾ç¼Õ¹«±â µ¥ÀÌÅÍ´Â ¿ÀÁ÷ MainHand¿¡ ÀúÀåÇÏ°í 
-	// MainHand1¿¡ ÀåÂøµÈ ¾ÆÀÌÅÛÀÇ ItemBaseRow°¡ TwoHanded ÅÂ±×¸¦ °¡Áö°í ÀÖÀ¸¸é OffHand1 ÀåÂøÀ» Â÷´Ü(¶Ç´Â ÀÚµ¿ ÇØÁ¦)ÇÏµµ·Ï Ã³¸®¿¹Á¤
+	// ì–‘ì†ë¬´ê¸° ì¼ê²¨ìš° MainHand1ë‘ OffHand1 ë‘˜ë‹¤ ì“´ë‹¤ê³  í‘œê¸°í•´ì•¼í•˜ë‚˜?
+	// MainHand1ê³¼ OffHand1 ì–‘ìª½ì— ë˜‘ê°™ì€ FMEOInventoryItemInstanceë¥¼ ë„£ì–´ë‘ë©´
+	// ì¥ë¹„ í•´ì œ(Unequip)ë‚˜ ì„¸ì´ë¸Œ/ë¡œë“œ ì‹œ ì•„ì´í…œì´ 2ê°œë¡œ ë³µì‚¬ë  ê°€ëŠ¥ì„±ì´ ìˆìœ¼ë¯€ë¡œ
+	// ì–‘ì†ë¬´ê¸° ë°ì´í„°ëŠ” ì˜¤ì§ MainHandì— ì €ì¥í•˜ê³  
+	// MainHand1ì— ì¥ì°©ëœ ì•„ì´í…œì˜ ItemBaseRowê°€ TwoHanded íƒœê·¸ë¥¼ ê°€ì§€ê³  ìˆìœ¼ë©´ OffHand1 ì¥ì°©ì„ ì°¨ë‹¨(ë˜ëŠ” ìë™ í•´ì œ)í•˜ë„ë¡ ì²˜ë¦¬ì˜ˆì •
 };
 
-//	ÇÃ·¹ÀÌ¾î ·¹º§, °æÇèÄ¡ ¹× ÅõÀÚ °¡´ÉÇÑ ÆĞ½Ãºê Æ÷ÀÎÆ® µ¥ÀÌÅÍ
+//	í”Œë ˆì´ì–´ ë ˆë²¨, ê²½í—˜ì¹˜ ë° íˆ¬ì ê°€ëŠ¥í•œ íŒ¨ì‹œë¸Œ í¬ì¸íŠ¸ ë°ì´í„°
 USTRUCT(BlueprintType)
 struct FMEOPlayerLevelData
 {
 	GENERATED_BODY()
 
-	//	ÇöÀç Ä³¸¯ÅÍ ·¹º§ (1~100)
+	//	í˜„ì¬ ìºë¦­í„° ë ˆë²¨ (1~100)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Progression")
 	int32 Level = 1;
 
-	//	ÇöÀç ·¹º§¿¡¼­ ´©ÀûµÈ °æÇèÄ¡
+	//	í˜„ì¬ ë ˆë²¨ì—ì„œ ëˆ„ì ëœ ê²½í—˜ì¹˜
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Progression")
 	int64 CurrentExp = 0;
 
-	//	°ø¿ë ÆĞ½Ãºê Æ®¸®¿¡ ÅõÀÚÇÒ ¼ö ÀÖ´Â ¹Ì»ç¿ë Æ÷ÀÎÆ®
+	//	ê³µìš© íŒ¨ì‹œë¸Œ íŠ¸ë¦¬ì— íˆ¬ìí•  ìˆ˜ ìˆëŠ” ë¯¸ì‚¬ìš© í¬ì¸íŠ¸
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Progression")
 	int32 UnspentPassivePoints = 0;
 
-	//	¹«±â ¼¼Æ®(Dual Spec) Àü¿ë ºĞ±â ³ëµå¿¡ ¹èºĞ °¡´ÉÇÑ Æ÷ÀÎÆ®
+	//	ë¬´ê¸° ì„¸íŠ¸(Dual Spec) ì „ìš© ë¶„ê¸° ë…¸ë“œì— ë°°ë¶„ ê°€ëŠ¥í•œ í¬ì¸íŠ¸
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Progression")
 	int32 WeaponSetPassivePoints = 0;
 };
 
-//	·±Å¸ÀÓ¿¡ »ı¼ºµÇ¾î ÀÎº¥Åä¸®,ÀåºñÃ¢,¹Ù´Ú¿¡ Á¸ÀçÇÏ´Â °³º° ¾ÆÀÌÅÛ ÀÎ½ºÅÏ½º
+//	ëŸ°íƒ€ì„ì— ìƒì„±ë˜ì–´ ì¸ë²¤í† ë¦¬,ì¥ë¹„ì°½,ë°”ë‹¥ì— ì¡´ì¬í•˜ëŠ” ê°œë³„ ì•„ì´í…œ ì¸ìŠ¤í„´ìŠ¤
 USTRUCT(BlueprintType)
 struct FMEOInventoryItemInstance
 {
 	GENERATED_BODY()
 	
-	//	¼­¹ö ±ÇÇÑÀ¸·Î ¹ß±ŞµÇ´Â Àü¿ª °íÀ¯ ½Äº°ÀÚ (º¹»ç ¹ö±× ¹æÁö ¹× Æ®·£Á÷¼Ç ÃßÀû¿ë)
+	//	ì„œë²„ ê¶Œí•œìœ¼ë¡œ ë°œê¸‰ë˜ëŠ” ì „ì—­ ê³ ìœ  ì‹ë³„ì (ë³µì‚¬ ë²„ê·¸ ë°©ì§€ ë° íŠ¸ëœì§ì…˜ ì¶”ì ìš©)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FGuid InstanceId;
 
-	//	¸¶½ºÅÍ ¾ÆÀÌÅÛ µ¥ÀÌÅÍ Å×ÀÌºí(FItemBaseRow)ÀÇ Çà(Row) ÀÌ¸§
+	//	ë§ˆìŠ¤í„° ì•„ì´í…œ ë°ì´í„° í…Œì´ë¸”(FItemBaseRow)ì˜ í–‰(Row) ì´ë¦„
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FName ItemBaseRowName = NAME_None;
 
-	//	¾ÆÀÌÅÛ ·¹º§ (ºÎ¿©µÉ ¼ö ÀÖ´Â Á¢µÎ/Á¢¹Ì»ç Æ¼¾î »óÇÑ¼± °áÁ¤)
+	//	ì•„ì´í…œ ë ˆë²¨ (ë¶€ì—¬ë  ìˆ˜ ìˆëŠ” ì ‘ë‘/ì ‘ë¯¸ì‚¬ í‹°ì–´ ìƒí•œì„  ê²°ì •)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	int32 ItemLevel = 1;
 
-	//	È­Æó ¿Àºê(Currency) µî ÁßÃ¸ °¡´É ¾ÆÀÌÅÛ ÇöÀç ¼ö·®
+	//	í™”í ì˜¤ë¸Œ(Currency) ë“± ì¤‘ì²© ê°€ëŠ¥ ì•„ì´í…œ í˜„ì¬ ìˆ˜ëŸ‰
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	int32 StackCount = 1;
 
-	// 2D °İÀÚ ÀÎº¥Åä¸® ³» ÁÂ»ó´Ü ±âÁØ ÁÂÇ¥ ((-1,-1ÀÌ¸é ¹Ì¹èÄ¡ ¶Ç´Â ÀåÂø »óÅÂ)
+	// 2D ê²©ì ì¸ë²¤í† ë¦¬ ë‚´ ì¢Œìƒë‹¨ ê¸°ì¤€ ì¢Œí‘œ ((-1,-1ì´ë©´ ë¯¸ë°°ì¹˜ ë˜ëŠ” ì¥ì°© ìƒíƒœ)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FIntPoint GridPosition = FIntPoint(-1, -1);
 
-	// ¹Ù¾Ë ¿Àºê(Vaal Orb) µî¿¡ ÀÇÇÑ Å¸¶ô ¿©ºÎ (true ½Ã Ãß°¡ Å©·¡ÇÁÆÃ Àá±İ)
+	// ë°”ì•Œ ì˜¤ë¸Œ(Vaal Orb) ë“±ì— ì˜í•œ íƒ€ë½ ì—¬ë¶€ (true ì‹œ ì¶”ê°€ í¬ë˜í”„íŒ… ì ê¸ˆ)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	bool bIsCorrupted = false;
 
-	// À¯È¿ÇÑ ¾ÆÀÌÅÛ ÀÎ½ºÅÏ½ºÀÎÁö °ËÁõÇÏ´Â ÇïÆÛ
+    //  í˜„ì¬ ì•„ì´í…œ í¬ê·€ë„ ë“±ê¸‰ (ì¼ë°˜ / ë§ˆë²• / í¬ê·€ / ê³ ìœ )
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+    EMEOItemRarity Rarity = EMEOItemRarity::Normal;
+
+    //  í˜„ì¬ ì•„ì´í…œì— ë¶€ì—¬ëœ ì ‘ì‚¬(Prefix / Suffix / Implicit) ì¸ìŠ¤í„´ìŠ¤ ëª©ë¡
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+    TArray<FMEOItemModifierInstance> Modifiers;
+
+	// ìœ íš¨í•œ ì•„ì´í…œ ì¸ìŠ¤í„´ìŠ¤ì¸ì§€ ê²€ì¦í•˜ëŠ” í—¬í¼
 	bool IsValid() const { return InstanceId.IsValid() && !ItemBaseRowName.IsNone(); }
 };
 
-//	³×Æ®¿öÅ© º¹Á¦¿ë Àåºñ ½½·í ¸ÅÇÎ ¿£Æ®¸®
-//	UE5 ¸®ÇÃ¸®ÄÉÀÌ¼ÇÀº TMap Á÷Á¢ º¹Á¦¸¦ Áö¿øÇÏÁö ¾ÊÀ¸¹Ç·Î ¹è¿­·Î º¹Á¦ÇÑ µÚ Å¬¶óÀÌ¾ğÆ®¿¡¼­ TMapÀ¸·Î Àç±¸Ãà ¿¹Á¤
+//	ë„¤íŠ¸ì›Œí¬ ë³µì œìš© ì¥ë¹„ ìŠ¬ë£» ë§¤í•‘ ì—”íŠ¸ë¦¬
+//	UE5 ë¦¬í”Œë¦¬ì¼€ì´ì…˜ì€ TMap ì§ì ‘ ë³µì œë¥¼ ì§€ì›í•˜ì§€ ì•Šìœ¼ë¯€ë¡œ ë°°ì—´ë¡œ ë³µì œí•œ ë’¤ í´ë¼ì´ì–¸íŠ¸ì—ì„œ TMapìœ¼ë¡œ ì¬êµ¬ì¶• ì˜ˆì •
 USTRUCT(BlueprintType)
 struct FMEOEquippedItemEntry
 {
 	GENERATED_BODY()
 
-	//	Àåºñ Á¾·ù 
+	//	ì¥ë¹„ ì¢…ë¥˜ 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 	EMEOEquipmentSlot Slot = EMEOEquipmentSlot::None;
 
-	//	¾ÆÀÌÅÛ Á¤º¸
+	//	ì•„ì´í…œ ì •ë³´
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 	FMEOInventoryItemInstance ItemInstance;
 
 };
 
-//	Äü½½·í¿¡ ÀåÂøµÈ ¾×Æ¼ºê ½ºÅ³ Áª ¹× ¿¬°á(Link)µÈ º¸Á¶Áª ±¸¼º µ¥ÀÌÅÍ
+//	í€µìŠ¬ë£»ì— ì¥ì°©ëœ ì•¡í‹°ë¸Œ ìŠ¤í‚¬ ì ¬ ë° ì—°ê²°(Link)ëœ ë³´ì¡°ì ¬ êµ¬ì„± ë°ì´í„°
 USTRUCT(BlueprintType)
 struct FMEOSocketedSkillInstance
 {
 	GENERATED_BODY()
 
-	//	½ºÅ³ Äü½½·í ÀÎµ¦½º (0 ~ 8)
+	//	ìŠ¤í‚¬ í€µìŠ¬ë£» ì¸ë±ìŠ¤ (0 ~ 8)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	int32 SkillSlotIndex = -1;
 
-	//	¾×Æ¼ºê ½ºÅ³ µ¥ÀÌÅÍ Å×ÀÌºíÀÇ Çà ÀÌ¸§
+	//	ì•¡í‹°ë¸Œ ìŠ¤í‚¬ ë°ì´í„° í…Œì´ë¸”ì˜ í–‰ ì´ë¦„
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	FName ActiveSkillRowName = NAME_None;
 
-	//	½ºÅ³ Áª ·¹º§ (±âº» µ¥¹ÌÁö °è¼ö ¹× ¸¶³ª ¼Ò¸ğ·® °áÁ¤ , ½ºÅİ ¿ä±¸Ä¡)
+	//	ìŠ¤í‚¬ ì ¬ ë ˆë²¨ (ê¸°ë³¸ ë°ë¯¸ì§€ ê³„ìˆ˜ ë° ë§ˆë‚˜ ì†Œëª¨ëŸ‰ ê²°ì • , ìŠ¤í…Ÿ ìš”êµ¬ì¹˜)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	int32 SkillLevel = 1;
 
-	//	ÇØ´ç ¾×Æ¼ºê ½ºÅ³¿¡ Á÷·Ä ¿¬°áµÈ º¸Á¶Áª (Support Gem) ¸ñ·Ï (¹ÂÅ×ÀÌÅÍ Ã¼ÀÎ ±¸¼º¿ë)
+	//	í•´ë‹¹ ì•¡í‹°ë¸Œ ìŠ¤í‚¬ì— ì§ë ¬ ì—°ê²°ëœ ë³´ì¡°ì ¬ (Support Gem) ëª©ë¡ (ë®¤í…Œì´í„° ì²´ì¸ êµ¬ì„±ìš©)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	TArray<FName> LinkedSupportGemRowNames;
 
 };
 
-//	´øÀü/ÇÊµå ÀÎ½ºÅÏ½º¿¡ ºÎ¿©µÇ´Â Àü¿ª ¸Ê ¸ğµğÆÄÀÌ¾î(Affix) µ¥ÀÌÅÍ
+//	ë˜ì „/í•„ë“œ ì¸ìŠ¤í„´ìŠ¤ì— ë¶€ì—¬ë˜ëŠ” ì „ì—­ ë§µ ëª¨ë””íŒŒì´ì–´(Affix) ë°ì´í„°
 USTRUCT(BlueprintType)
 struct FMEOZoneModifierData
 {
 	GENERATED_BODY()
 
-	//	¸Ê ¸ğµğÆÄÀÌ¾î ½Äº° ÅÂ±×/ID (¿¹: ¸ó½ºÅÍ Ä¡¸íÅ¸ È®·ü Áõ°¡, ÇÃ·¹ÀÌ¾î ¿ø¼Ò ÀúÇ× °¨¼Ò µî)
+	//	ë§µ ëª¨ë””íŒŒì´ì–´ ì‹ë³„ íƒœê·¸/ID (ì˜ˆ: ëª¬ìŠ¤í„° ì¹˜ëª…íƒ€ í™•ë¥  ì¦ê°€, í”Œë ˆì´ì–´ ì›ì†Œ ì €í•­ ê°ì†Œ ë“±)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Zone")
 	FName ModifierId = NAME_None;
 
-	//	¸ğµğÆÄÀÌ¾î Àû¿ë ¼öÄ¡
+	//	ëª¨ë””íŒŒì´ì–´ ì ìš© ìˆ˜ì¹˜
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Zone")
 	float Magnitude = 0.0f;
 
 };
 
-//	USaveGame ¹ÙÀÌ³Ê¸® Á÷·ÄÈ­ ¹× ¼¼¼Ç °£ ¿µ¼Ó ÀúÀåÀ» À§ÇÑ ÅëÇÕ ¼¼ÀÌºê ±¸Á¶Ã¼
+//	USaveGame ë°”ì´ë„ˆë¦¬ ì§ë ¬í™” ë° ì„¸ì…˜ ê°„ ì˜ì† ì €ì¥ì„ ìœ„í•œ í†µí•© ì„¸ì´ë¸Œ êµ¬ì¡°ì²´
 USTRUCT(BlueprintType)
 struct FMEOSaveGameData
 {
 	GENERATED_BODY()
 	
-	//	Ä³¸¯ÅÍ ½Äº° ÀÌ¸§
+	//	ìºë¦­í„° ì‹ë³„ ì´ë¦„
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveData")
 	FString CharacterName = TEXT("WaystoneExile");
 
-	//	·¹º§, °æÇèÄ¡ ÀÜ¿© ÆĞ½Ãºê Æ÷ÀÎÆ®
+	//	ë ˆë²¨, ê²½í—˜ì¹˜ ì”ì—¬ íŒ¨ì‹œë¸Œ í¬ì¸íŠ¸
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveData")
 	FMEOPlayerLevelData SavedLevelData;
 
-	//	2D °İÀÚ ÀÎº¥Åä¸® º¸À¯ ¾ÆÀÌÅÛ ÀüÃ¼ ¸ñ·Ï
+	//	2D ê²©ì ì¸ë²¤í† ë¦¬ ë³´ìœ  ì•„ì´í…œ ì „ì²´ ëª©ë¡
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveData")
 	TArray<FMEOInventoryItemInstance> SavedInventory;
 
-	//	ºÎÀ§º° ÀåÂø ÁßÀÎ Àåºñ ½½·Ô¸Ê
+	//	ë¶€ìœ„ë³„ ì¥ì°© ì¤‘ì¸ ì¥ë¹„ ìŠ¬ë¡¯ë§µ
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveData")
 	TMap<EMEOEquipmentSlot, FMEOInventoryItemInstance> SavedEquipment;
 
-	//	¼ÒÄÏ¿¡ ÀåÂøµÈ ¾×Æ¼ºê/º¸Á¶ ½ºÅ³ ±¸¼º ¸ñ·Ï
+	//	ì†Œì¼“ì— ì¥ì°©ëœ ì•¡í‹°ë¸Œ/ë³´ì¡° ìŠ¤í‚¬ êµ¬ì„± ëª©ë¡
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveData")
 	TArray<FMEOSocketedSkillInstance> SavedSkills;
 
-	//	¹«±â ¼¼Æ®¿Í ¹«°üÇÏ°Ô Ç×»ó È°¼ºÈ­µÇ´Â °ø¿ë ÆĞ½Ãºê ³ëµå ID ¸ñ·Ï
+	//	ë¬´ê¸° ì„¸íŠ¸ì™€ ë¬´ê´€í•˜ê²Œ í•­ìƒ í™œì„±í™”ë˜ëŠ” ê³µìš© íŒ¨ì‹œë¸Œ ë…¸ë“œ ID ëª©ë¡
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveData")
 	TArray<FName> CommonPassiveNodes;
 
-	//	1¹ø ¹«±â ¼¼Æ® È°¼ºÈ­ ½Ã Àû¿ëµÇ´Â Àü¿ë ÆĞ½Ãºê ³ëµå ID ¸ñ·Ï (Dual Spec)
+	//	1ë²ˆ ë¬´ê¸° ì„¸íŠ¸ í™œì„±í™” ì‹œ ì ìš©ë˜ëŠ” ì „ìš© íŒ¨ì‹œë¸Œ ë…¸ë“œ ID ëª©ë¡ (Dual Spec)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveData")
 	TArray<FName> WeaponSet1PassiveNodes;
 
-	//	2¹ø ¹«±â ¼¼Æ® È°¼ºÈ­ ½Ã Àû¿ëµÇ´Â Àü¿ë ÆĞ½Ãºê ³ëµå ID ¸ñ·Ï (Dual Spec)
+	//	2ë²ˆ ë¬´ê¸° ì„¸íŠ¸ í™œì„±í™” ì‹œ ì ìš©ë˜ëŠ” ì „ìš© íŒ¨ì‹œë¸Œ ë…¸ë“œ ID ëª©ë¡ (Dual Spec)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveData")
 	TArray<FName> WeaponSet2PassiveNodes;
 
