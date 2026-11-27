@@ -5,7 +5,11 @@
 접사 추첨 로직은 `UMEODropSubsystem::RollRandomAffixFromTable()`을 재사용하여 드랍 장비와 크래프팅 장비 간의 규칙 일관성을 유지하며, 사전 검증 API(`CanApplyCurrencyOrb`)를 분리해 클라이언트 UI 툴팁과 서버 권한 실행 로직을 명확히 구분했습니다.
 
 ### 크래프팅 동작 레퍼런스 영상
-* **시연 영상:** [시퀀스 01.mp4](./시퀀스_01.mp4)
+* **시연 영상:** 
+
+https://github.com/user-attachments/assets/c00e5517-30d7-43d9-aed4-73b470bc1fff
+
+
   * `00:03 ~ 00:05`: **제왕의 오브(Regal Orb)** 사용 → 마법(Magic) 지팡이가 희귀(Rare) 등급으로 승급하며 접사 추가
   * `00:06 ~ 00:10`: **엑잘티드 오브(Exalted Orb)** 연속 사용 → 희귀 장비의 빈 슬롯에 신규 접사(번개 피해 증가, 주문 스킬 레벨 +2 등) 추가
   * `00:11 ~ 00:12`: **신비학자의 식각기(Arcanist's Etcher)** 사용 → 캐스터 무기 퀄리티(`+4%`) 상승
