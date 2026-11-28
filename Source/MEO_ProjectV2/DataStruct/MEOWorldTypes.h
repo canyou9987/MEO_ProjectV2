@@ -20,7 +20,7 @@ enum class EMEOZoneState : uint8
 
 //  활성화된 경로석(Waystone) 인스턴스의 런타임 구성 데이터
 USTRUCT(BlueprintType)
-struct FEMOWaystoneMapData
+struct FMEOWaystoneMapData
 {
     GENERATED_BODY()
 
@@ -42,7 +42,7 @@ struct FEMOWaystoneMapData
 
     //  잔여 부활 /입장 포탈 횟수 (기본 6회,0 도달 시 인스턴스 실패)
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Map")
-    int32 RemainingPortal = 6;
+    int32 RemainingPortals = 6;
 
     //  경로석에 부여된 전역 맵 모디파이어 목록 (몬스터 강화 + 보상 보너스)
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Map")
