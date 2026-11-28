@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 #include "MEO_ProjectV2/DataStruct/MEODataTypes.h"
 #include "MEO_ProjectV2/DataStruct/MEOItemTypes.h"
 #include "MEOWorldTypes.generated.h"
@@ -92,4 +93,95 @@ struct FMEOMapProgressData
         const int32 ClearedBoss = (bHasMapBoss && bBossDefeated) ? 1 : 0;
         return static_cast<float>(ClearedRare + ClearedBoss) / static_cast<float>(TotalObjectives);
     }
+};
+
+//  퀘스트 생명주기 상태
+UENUM(BlueprintType)
+enum class EMEOQuestState : uint8
+{
+    Locked,             //  선행 퀘스트 미완료로 잠금 상태
+    Available,          //  수락 가능 상태
+    InProgress,         //  진행 중 (목표 카운트 누적 중)
+    ReadyToTurnIn,      //  모든 목표 달성 완료, NPC 보상 수령 대기
+    Completed           //  보상 수령까지 최종 완료
+};
+
+//  퀘스트 목표 유형 분류
+UENUM(BlueprintType)
+enum class EMEOQuestObjectiveType : uint8
+{
+    KillTarget,         //  특정 몬스터/보스 처치 
+    ReachZone,          //  특정 구역/던전 도달               (TargetId = MapZoneRowName)
+    CollectItem,        //  퀘스트 아이템 획득                (TargetId = ItemBaseRowName)
+    InteractNPC,        //  특정 NPC와 대화/상호작용          (TargetId = NPC 식별자)
+    ClearWaystoneTier   //  특정 티어 이상의 경로석 맵 클리어 (TargetId = "Any",RequiredCount = 목표 횟수)
+};
+
+//  데이터 테이블용 개별 목표 정의 단위
+USTRUCT(BlueprintType)
+struct FMEOQuestObjectiveDef
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    EMEOQuestObjectiveType ObjectiveType = EMEOQuestObjectiveType::KillTarget;
+
+    //  목표 대상 식별 키 (몬스터 ID,구역 ID,아이템 ID 등)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    FName TargetId = NAME_None;
+
+    //  목표 달성 요구 수치 (예: 몬스터 10마리 처치 ->10)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    int32 RequiredCount = 1;
+
+    //  목표 달성 최소 등급 조건 (예: ClearWaystone)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    int32 MinimumTier = 1;
+};
+
+//  데이터 테이블(UDataTable)용 퀘스트 마스터 정의 행 구조체
+USTRUCT(BlueprintType)
+struct FMEOQuestTableRow : public FTableRowBase
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    FText QuestTitle;
+
+    //  선행 완료가 필요한 퀘스트 RowName 목록
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    TArray<FName> PrerequisiteQuestIds;
+
+    //  퀘스트 완료를 위해 달성해야 하는 목록
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    TArray<FMEOQuestObjectiveDef> Objectives;
+
+    //  완료 보상 경험치
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    int32 RewardExp = 0;
+
+    //  완료 보상 패시브 스킬 포인트 (POE2 캠패인 보스/퀘스트 영구 보상)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    int32 RewardPassivePoints = 0;
+
+    //  완료 보상 아이템 RowName 목록
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    TArray<FName> RewardItemRowNames;
+};
+
+//  런타임 및 세이브 직렬화용 활성 퀘스트 진행 인스턴스
+USTRUCT(BlueprintType)
+struct FMEOActiveQuestEntry
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    FName QuestId = NAME_None;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    EMEOQuestState State = EMEOQuestState::InProgress;
+
+    //  Objective 배열과 1:1 인덱스로 매칭되는 현재 달성 카운트
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+    TArray<int32> CurrentCounts;
 };
